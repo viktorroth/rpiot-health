@@ -31,17 +31,19 @@ Every measurement is logged in a database. The communication is facilitated by a
 
 ## Installation and Setup
 
+1. Clone this repositrory
+2. Install dependencies with `pip install -r requirements.txt`
+> Note the `requirements.txt` file is bloated due to extended experimentation during development.
+> I will address this issue later on.
+
 ### API
 1. Supplement your Twilio credentials in `api/twilio.env`
-
-### 
+2. Run `source api/twilio.env`
+3. Run `uvicorn api:app --reload`
+  - this will give you a server running at `http://127.0.0.1:8000`
 
 ### Quickstart
-
-- `source twilio.env`
-- `uvicorn api:app --reload`
-	- this will give you a server running at `http://127.0.0.1:8000`
-- `python hr_spo2.py`
+- Run `python hr_spo2.py`
 - Run `temp_sense.py` periodically
 	1. Decide how often you want to run it (you can visit [crontab.guru](https://crontab.guru/) for help)
 	2. `crontab -e` to edit crontab (for Linux)
@@ -50,10 +52,14 @@ Every measurement is logged in a database. The communication is facilitated by a
 
 ## API
 
-It uses the FastAPI library.
+It uses the [FastAPI](https://fastapi.tiangolo.com/) library. A nice and handy feature is the documentation provided out of the box. The documentation is provided in two versions - Swagger and Redoc.
+
+Use `http://localhost:8000/docs` for Swagger or `http://localhost:8000/redoc` for Redoc.
+
+![Swagger documentation of the API](/images/docs.png)
 
 
-## TODO
+## TODOS
 
 - [ ] Use SQLAlchemy (API)
 - [ ] Pagination (API)
@@ -62,7 +68,7 @@ It uses the FastAPI library.
 - [ ] Use a config file for various configurable bits and pieces (e.g. mobile phone)
 - [ ] Split up the `hr_spo2.py` script and move parts to the API
 - [ ] Use a cloud provider for DB and API (Raspberry Pi as an interface to connect sensors to only)
-
+- [ ] Use [Poetry](https://python-poetry.org/) for package and dependency management
 
 ## Limitations
 
