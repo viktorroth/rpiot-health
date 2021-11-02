@@ -26,7 +26,7 @@ Every measurement is logged in a database. The communication is facilitated by a
 
 ## Diagram
 
-[!Fritzing diagram of the health tracking system](/images/fritzing.png)
+![Fritzing diagram of the health tracking system](/images/fritzing.png)
 
 
 ## Installation and Setup
@@ -50,7 +50,7 @@ Every measurement is logged in a database. The communication is facilitated by a
 
 ## API
 
-It uses the 
+It uses the FastAPI library.
 
 
 ## TODO
