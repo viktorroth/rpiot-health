@@ -1,3 +1,9 @@
+# Ported version of the MaximIntegrated RD117_ARDUINO library used
+# https://github.com/vrano714/max30102-tutorial-raspberrypi
+# 
+# Ported version of the SparkFun MAX3010x library used
+# https://github.com/sparkfun/Qwiic_MAX3010x_Py
+
 import time
 import sys
 import threading
@@ -50,7 +56,10 @@ class Monitor(ABC):
 
 
 class SPO2Monitor(Monitor):
-	"""SpO2 monitor. Adapted from ..."""
+	"""
+	SpO2 monitor. It handles the measurement and calculation of 
+	oxygen saturation.
+	"""
 
 	LOOP_TIME = 0.5
 
@@ -116,7 +125,10 @@ class SPO2Monitor(Monitor):
 
 
 class HRMonitor(Monitor):
-	"""Heart rate monitor. Adapted from ... """
+	"""
+	Heart rate monitor. It handles the measurement and calculation of 
+	heart rate in beats per minute.
+	"""
 
 	def __init__(self, log=True):
 		self.log = log
@@ -148,7 +160,6 @@ class HRMonitor(Monitor):
 
 		return self.result.value
 
-
 	def stop_sensor(self):
 		try:
 			self.sensor.shutDown()
@@ -157,14 +168,14 @@ class HRMonitor(Monitor):
 
 	def run_sensor(self, seconds):
 
-		RATE_SIZE = 2 # Increase this for more averaging. 4 is good.
-		rates = list(range(RATE_SIZE)) # list of heart rates
+		RATE_SIZE = 2
+		rates = list(range(RATE_SIZE))
 		rateSpot = 0
-		lastBeat = 0 # Time at which the last beat occurred
+		lastBeat = 0
 		beatsPerMinute = 0.00
 		beatAvg = 0
-		samplesTaken = 0 # Counter for calculating the Hz or read rate
-		startTime = self.millis() # Used to calculate measurement rate
+		samplesTaken = 0
+		startTime = self.millis()
 		bpms = []
 
 		end_time = datetime.now() + timedelta(seconds=seconds)
@@ -183,8 +194,8 @@ class HRMonitor(Monitor):
 		
 				if beatsPerMinute < 255 and beatsPerMinute > 20:
 					rateSpot += 1
-					rateSpot %= RATE_SIZE # Wrap variable
-					rates[rateSpot] = beatsPerMinute # Store this reading in the array
+					rateSpot %= RATE_SIZE
+					rates[rateSpot] = beatsPerMinute
 
 					# Take average of readings
 					beatAvg = 0
@@ -211,6 +222,7 @@ def blink_led():
 		time.sleep(0.1)
 		GPIO.output(LED_PIN, False)
 		time.sleep(0.1)
+
 
 def callback(channel):
 
@@ -243,9 +255,8 @@ def callback(channel):
 
 	if (hr < HR_THRESHOLD['min'] or hr > HR_THRESHOLD['max']) or (spo2 < OXYGEN_THRESHOLD):
 		blink_led()
-		# logging.info('Sending SMS alert')
-		# requests.post(f'{API}/sms_alert', json=body)
-	
+		logging.info('Sending SMS alert')
+		requests.post(f'{API}/sms_alert', json=body)
 
 
 if __name__ == '__main__':

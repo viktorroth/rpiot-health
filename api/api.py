@@ -41,38 +41,40 @@ async def database_disconnect():
 
 @app.get("/ping")
 async def ping():
+    """Check if API is up and running"""
     return {'ping': 'pong'}
 
 @app.get("/health")
-async def get_health_readings():
+async def get_health_measurements():
+    """Return all health measurements"""
     query = "SELECT * FROM health"
     results = await database.fetch_all(query=query)
     return  results
 
 @app.post("/health")
-async def add_health_reading(item: HealthItem):
+async def add_health_measurement(item: HealthItem):
+    """Add a health measurement"""
     query = "INSERT INTO health (heart_rate, oxygen_saturation) VALUES (:heart_rate, :oxygen_saturation)"
     results = await database.execute(query=query, values=item.dict())
     return  results
 
 @app.get("/env")
-async def get_env_readings():
+async def get_env_measurements():
+    """Return all environment measurements"""
     query = "SELECT * FROM environment"
     results = await database.fetch_all(query=query)
     return  results
 
 @app.post("/env")
-async def add_env_reading(item: EnvItem):
+async def add_env_measurement(item: EnvItem):
+    """Add a measurement from the environment"""
     query = "INSERT INTO environment (temperature, humidity) VALUES (:temperature, :humidity)"
     results = await database.execute(query=query, values=item.dict())
     return  results
 
-@app.post("/led")
-async def led_on():
-    pass
-
 @app.post("/sms_alert")
 async def sms_alert(item: HealthItem):
+    """Send an SMS alert through Twilio"""
     account_sid = os.environ['TWILIO_ACCOUNT_SID'] 
     auth_token = os.environ['TWILIO_AUTH_TOKEN']
     twilio_number = os.environ['TWILIO_PHONE_NUMBER']

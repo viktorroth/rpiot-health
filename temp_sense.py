@@ -1,3 +1,6 @@
+# Code adapted from a blog post by SHEDBOY71
+# (http://www.pibits.net/code/raspberry-pi-sht31-sensor-example.php)
+
 import requests
 import smbus
 import time
